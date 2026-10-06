@@ -4,6 +4,11 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>Backend.Model</RootNamespace>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Abstractions\" />
+    </ItemGroup>
 
 </Project>
