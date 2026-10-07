@@ -1,10 +1,11 @@
+using Backend.Model.Abstractions;
 using Backend.Model.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Infrastructure.Persistence;
 
 public sealed class MarketplaceDbContext(DbContextOptions<MarketplaceDbContext> options)
-    : DbContext(options)
+    : DbContext(options), IUnitOfWork
 {
     public DbSet<User> Users => Set<User>();
     public DbSet<Seller> Sellers => Set<Seller>();
