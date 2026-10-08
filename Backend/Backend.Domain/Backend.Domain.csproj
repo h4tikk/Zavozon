@@ -11,4 +11,8 @@
       <Folder Include="Abstractions\Repositories\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Abstractions\Services\ISellerService.cs" />
+    </ItemGroup>
+
 </Project>
