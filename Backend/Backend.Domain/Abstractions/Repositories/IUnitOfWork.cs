@@ -1,4 +1,4 @@
-namespace Backend.Model.Abstractions;
+namespace Backend.Model.Abstractions.Repositories;
 
 public interface IUnitOfWork
 {

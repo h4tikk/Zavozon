@@ -1,4 +1,4 @@
-using Backend.Model.Abstractions;
+using Backend.Model.Abstractions.Repositories;
 using Backend.Model.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +19,7 @@ internal sealed class UserRepository(MarketplaceDbContext dbContext) : IUserRepo
     public Task<bool> NicknameExistsAsync(
         string nickname,
         CancellationToken cancellationToken = default) =>
-        dbContext.Users.AnyAsync(u => u.Nickname == nickname, cancellationToken);
+        dbContext.Users.AnyAsync(u => u.MinecraftNickname == nickname, cancellationToken);
 
     public async Task AddAsync(User user, CancellationToken cancellationToken = default) =>
         await dbContext.Users.AddAsync(user, cancellationToken);

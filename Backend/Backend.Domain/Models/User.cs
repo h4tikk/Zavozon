@@ -3,12 +3,12 @@ namespace Backend.Model.Models;
 
 public class User : BaseEntity
 {
-    public string Nickname { get; set; } = string.Empty;
+    public string MinecraftNickname { get; set; } = string.Empty;
     
-    public string TelegramUsername { get; set; }  = string.Empty;
+    public string? TelegramUsername { get; set; }  = string.Empty;
     public long TelegramUserId { get; set; } 
     
-    public string AvatarPath { get; set; }  = string.Empty;
+    public string? AvatarPath { get; set; }  = string.Empty;
     
     public UserStatus Status { get; set; } =  UserStatus.Active;
     

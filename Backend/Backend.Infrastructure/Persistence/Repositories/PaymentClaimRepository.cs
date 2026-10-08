@@ -1,4 +1,4 @@
-using Backend.Model.Abstractions;
+using Backend.Model.Abstractions.Repositories;
 using Backend.Model.Extensions;
 using Backend.Model.Models;
 using Microsoft.EntityFrameworkCore;

@@ -1,6 +1,6 @@
 using Backend.Infrastructure.Persistence;
 using Backend.Infrastructure.Persistence.Repositories;
-using Backend.Model.Abstractions;
+using Backend.Model.Abstractions.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -1,6 +1,6 @@
 using Backend.Model.Models;
 
-namespace Backend.Model.Abstractions;
+namespace Backend.Model.Abstractions.Repositories;
 
 public interface IPurchaseRepository
 {

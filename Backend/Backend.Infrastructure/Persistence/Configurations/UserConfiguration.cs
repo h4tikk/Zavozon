@@ -11,16 +11,14 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
         builder.ToTable("users");
         builder.ConfigureBaseEntity();
 
-        builder.Property(u => u.Nickname)
+        builder.Property(u => u.MinecraftNickname)
             .HasMaxLength(32)
             .IsRequired();
-        
+
         builder.Property(u => u.TelegramUsername)
-            .HasMaxLength(64)
-            .IsRequired();
+            .HasMaxLength(64);
         builder.Property(u => u.AvatarPath)
-            .HasMaxLength(512)
-            .IsRequired();
+            .HasMaxLength(512);
         
         builder.Property(u => u.Status)
             .HasConversion<string>()
@@ -29,7 +27,7 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(u => u.TelegramUserId)
             .IsUnique();
         
-        builder.HasIndex(x => x.Nickname)
+        builder.HasIndex(x => x.MinecraftNickname)
             .IsUnique();
     }
 }
