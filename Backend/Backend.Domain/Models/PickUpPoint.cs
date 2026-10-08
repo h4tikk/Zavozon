@@ -7,8 +7,6 @@ public class PickUpPoint : BaseEntity
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
 
-    public string ServerName { get; set; } = string.Empty;
-    public string WorldName { get; set; } = string.Empty;
     public int X { get; set; }
     public int Y { get; set; }
     public int Z { get; set; }

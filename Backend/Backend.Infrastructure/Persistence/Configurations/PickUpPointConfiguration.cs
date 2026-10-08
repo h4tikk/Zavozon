@@ -18,17 +18,10 @@ internal sealed class PickUpPointConfiguration : IEntityTypeConfiguration<PickUp
         builder.Property(pup => pup.Description)
             .HasMaxLength(2000);
         
-        builder.Property(pup => pup.ServerName)
-            .HasMaxLength(64)
-            .IsRequired();
-        
-        builder.Property(pup => pup.WorldName)
-            .HasMaxLength(64)
-            .IsRequired();
-        
         builder.Property(pup => pup.Status)
             .HasConversion<string>()
             .HasMaxLength(32);
+        
         builder.Property(pup => pup.ReviewedAt)
             .HasColumnType("timestamp with time zone");
         
