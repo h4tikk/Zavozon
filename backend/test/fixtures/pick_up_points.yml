@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  description: MyText
+  x: 1
+  'y': 1
+  z: 1
+  pick_up_point_status: 1
+  owner: one
+  reviewer: one
+  reviewed_at: 2026-10-09 22:56:09
+  rejection_reason: MyText
+  suspension_reason: MyText
+
+two:
+  name: MyString
+  description: MyText
+  x: 1
+  'y': 1
+  z: 1
+  pick_up_point_status: 1
+  owner: two
+  reviewer: two
+  reviewed_at: 2026-10-09 22:56:09
+  rejection_reason: MyText
+  suspension_reason: MyText

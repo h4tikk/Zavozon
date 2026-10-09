@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  minecraft_nickname: MyString
+  telegram_username: MyString
+  telegram_user_id: 1
+
+two:
+  minecraft_nickname: MyString
+  telegram_username: MyString
+  telegram_user_id: 1

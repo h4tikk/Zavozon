@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  purchase: one
+  seller: one
+  expected_amount: 1
+  claimed_amount: 1
+  player_nickname: MyString
+  receiver_nickname: MyString
+  payment_claim_status: 1
+  reviewer: one
+  reviewed_at: 2026-10-09 23:12:01
+  rejection_reason: MyText
+
+two:
+  user: two
+  purchase: two
+  seller: two
+  expected_amount: 1
+  claimed_amount: 1
+  player_nickname: MyString
+  receiver_nickname: MyString
+  payment_claim_status: 1
+  reviewer: two
+  reviewed_at: 2026-10-09 23:12:01
+  rejection_reason: MyText
