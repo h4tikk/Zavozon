@@ -9,7 +9,7 @@ class CreatePaymentClaims < ActiveRecord::Migration[8.1]
       t.string :player_nickname
       t.string :receiver_nickname
       t.integer :payment_claim_status
-      t.references :reviewer, null: false, foreign_key: true
+      t.references :reviewer, null: false, foreign_key: { to_table: :users }
       t.datetime :reviewed_at
       t.text :rejection_reason
 

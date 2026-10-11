@@ -1,6 +1,6 @@
 **/bin/
 **/obj/
-
+**/config
 *.user
 *.suo
 *.userosscache

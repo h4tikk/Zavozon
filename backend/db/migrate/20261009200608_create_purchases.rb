@@ -8,7 +8,6 @@ class CreatePurchases < ActiveRecord::Migration[8.1]
       t.integer :total_amount
       t.integer :purchase_status
       t.datetime :payment_expire_at
-      t.references :payment_claim, null: false, foreign_key: true
 
       t.timestamps
     end

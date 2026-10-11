@@ -7,8 +7,8 @@ class CreatePickUpPoints < ActiveRecord::Migration[8.1]
       t.integer :y
       t.integer :z
       t.integer :pick_up_point_status
-      t.references :owner, null: false, foreign_key: true
-      t.references :reviewer, null: false, foreign_key: true
+      t.references :owner, null: false, foreign_key: { to_table: :users }
+      t.references :reviewer, null: false, foreign_key: { to_table: :users }
       t.datetime :reviewed_at
       t.text :rejection_reason
       t.text :suspension_reason
