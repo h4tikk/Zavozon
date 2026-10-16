@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_11_191858) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_16_200120) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "api_sessions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "token_digest"
+    t.datetime "expires_at"
+    t.datetime "revoked_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_api_sessions_on_user_id"
+  end
 
   create_table "cart_items", force: :cascade do |t|
     t.bigint "cart_id", null: false
@@ -142,22 +152,32 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_11_191858) do
     t.text "descriprion"
     t.bigint "user_id", null: false
     t.datetime "paid_until"
-    t.integer "approval_status"
+    t.integer "approval_status", default: 0, null: false
     t.datetime "reviewed_at"
     t.text "rejection_reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "reviewer_id_id"
+    t.index ["reviewer_id_id"], name: "index_sellers_on_reviewer_id_id"
     t.index ["user_id"], name: "index_sellers_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "minecraft_nickname"
     t.string "telegram_username"
-    t.integer "telegram_user_id"
+    t.bigint "telegram_user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "admin", default: false, null: false
+    t.datetime "blocked_at"
+    t.boolean "can_review_sellers", default: false, null: false
+    t.boolean "can_review_couriers", default: false, null: false
+    t.boolean "can_review_pick_up_points", default: false, null: false
+    t.boolean "can_review_payments", default: false, null: false
+    t.index ["telegram_user_id"], name: "index_users_on_telegram_user_id", unique: true
   end
 
+  add_foreign_key "api_sessions", "users"
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "products"
   add_foreign_key "carts", "users"
@@ -177,4 +197,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_11_191858) do
   add_foreign_key "purchases", "pick_up_points"
   add_foreign_key "purchases", "users"
   add_foreign_key "sellers", "users"
+  add_foreign_key "sellers", "users", column: "reviewer_id_id"
 end

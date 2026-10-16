@@ -1,12 +1,25 @@
 class Seller < ApplicationRecord
-  enum seller_approval_status: [ :pending_review, :approved, :rejected, :cancelled ]
+  enum :approval_status, {
+    pending: 0,
+    approved: 1,
+    rejected: 2,
+    suspended: 3
+  }, validate: true
 
-  validates :store_name, presence: true
-
-  has_many :orders, dependent: :destroy
-  has_many :products, dependent: :destroy
-  has_many :payment_claims, dependent: :destroy
+  has_many :orders
+  has_many :products
+  has_many :payment_claims
 
   belongs_to :user
   belongs_to :reviewer, class_name: "User", optional: true
+
+  validates :store_name, presence: true
+  validates :refection_reason, presence: true, if: :rejected?
+
+  def can_trade?
+    !user.blocked &&
+      approved &&
+      paid_until.present? &&
+      paid_until > Time.current
+  end
 end

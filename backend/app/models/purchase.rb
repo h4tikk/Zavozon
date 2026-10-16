@@ -1,7 +1,7 @@
 class Purchase < ApplicationRecord
   enum purchace_status: [ :awaiting_payment, :payment_review, :paid, :processing, :ready_for_pick_up, :completed, :expired, :cancelled, :disputed ]
 
-  validates :products_amount, :delivery_amount, :total_amount, numericality: { greater_than: 0 }
+  validates :products_amount, :delivery_amount, :total_amount, numericality: { only_integer: true, greater_than: 0 }
 
   has_many :orders, dependent: :destroy
 

@@ -3,7 +3,7 @@ class PaymentClaim < ApplicationRecord
   enum payment_claim_status: [ :awaiting_transfer, :pending_review, :approved, :rejected, :expired, :cancelled ]
 
   validates :player_nickname, :receiver_nickname, presence: true
-  validates :expected_amount, :claimed_amount, numericality: { greater_than: 0 }
+  validates :expected_amount, :claimed_amount, numericality: { only_integer: true, greater_than: 0 }
 
   has_one :purchase, dependent: :destroy
 

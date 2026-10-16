@@ -5,7 +5,7 @@ class Order < ApplicationRecord
     :seller_reward,
     :courier_reward,
     :pick_up_point_reward,
-    :platform_commission, numericality: { greater_then: 0 }
+    :platform_commission, numericality: {only_integer: true, greater_then: 0 }
 
   belongs_to :purchase
   belongs_to :seller
