@@ -1,10 +1,13 @@
 class Seller < ApplicationRecord
   enum :approval_status, {
-    pending: 0,
+    pending_review: 0,
     approved: 1,
     rejected: 2,
     suspended: 3
   }, validate: true
+
+  validates :store_name, presence: true
+  validates :refection_reason, presence: true, if: :rejected?
 
   has_many :orders
   has_many :products
@@ -12,9 +15,6 @@ class Seller < ApplicationRecord
 
   belongs_to :user
   belongs_to :reviewer, class_name: "User", optional: true
-
-  validates :store_name, presence: true
-  validates :refection_reason, presence: true, if: :rejected?
 
   def can_trade?
     !user.blocked &&

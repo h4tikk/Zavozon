@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_16_200120) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_20_152154) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -46,6 +46,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_16_200120) do
     t.boolean "is_available"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "approval_status", default: 0, null: false
+    t.datetime "reviewed_at"
+    t.bigint "reviewer_id"
+    t.text "rejection_reason"
+    t.index ["reviewer_id"], name: "index_couriers_on_reviewer_id"
     t.index ["user_id"], name: "index_couriers_on_user_id"
   end
 
@@ -84,14 +89,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_16_200120) do
 
   create_table "payment_claims", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "purchase_id", null: false
-    t.bigint "seller_id", null: false
+    t.bigint "purchase_id"
+    t.bigint "seller_id"
     t.integer "expected_amount"
     t.integer "claimed_amount"
     t.string "player_nickname"
     t.string "receiver_nickname"
     t.integer "payment_claim_status"
-    t.bigint "reviewer_id", null: false
+    t.bigint "reviewer_id"
     t.datetime "reviewed_at"
     t.text "rejection_reason"
     t.datetime "created_at", null: false
@@ -109,9 +114,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_16_200120) do
     t.integer "x"
     t.integer "y"
     t.integer "z"
-    t.integer "pick_up_point_status"
+    t.integer "pick_up_point_status", default: 0, null: false
     t.bigint "owner_id", null: false
-    t.bigint "reviewer_id", null: false
+    t.bigint "reviewer_id"
     t.datetime "reviewed_at"
     t.text "rejection_reason"
     t.text "suspension_reason"
@@ -149,7 +154,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_16_200120) do
 
   create_table "sellers", force: :cascade do |t|
     t.string "store_name"
-    t.text "descriprion"
+    t.text "description"
     t.bigint "user_id", null: false
     t.datetime "paid_until"
     t.integer "approval_status", default: 0, null: false
@@ -157,8 +162,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_16_200120) do
     t.text "rejection_reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "reviewer_id_id"
-    t.index ["reviewer_id_id"], name: "index_sellers_on_reviewer_id_id"
+    t.bigint "reviewer_id"
+    t.index ["reviewer_id"], name: "index_sellers_on_reviewer_id"
     t.index ["user_id"], name: "index_sellers_on_user_id"
   end
 
@@ -182,6 +187,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_16_200120) do
   add_foreign_key "cart_items", "products"
   add_foreign_key "carts", "users"
   add_foreign_key "couriers", "users"
+  add_foreign_key "couriers", "users", column: "reviewer_id"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "couriers"
@@ -197,5 +203,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_16_200120) do
   add_foreign_key "purchases", "pick_up_points"
   add_foreign_key "purchases", "users"
   add_foreign_key "sellers", "users"
-  add_foreign_key "sellers", "users", column: "reviewer_id_id"
+  add_foreign_key "sellers", "users", column: "reviewer_id"
 end
