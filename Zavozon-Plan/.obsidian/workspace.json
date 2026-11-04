@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "06 Проверка и готовность.md",
+                "file": "Models/M01 User.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "06 Проверка и готовность"
+              "title": "M01 User"
             }
           }
         ]
@@ -191,6 +191,8 @@
   },
   "active": "a2995513ab116d8d",
   "lastOpenFiles": [
+    "Models/M00 ApplicationRecord.md",
+    "06 Проверка и готовность.md",
     "Tasks/T01 Исправить подтверждённые дефекты и проверить миграции.md",
     "Канбан.md",
     "09 Индекс моделей и историй.md"

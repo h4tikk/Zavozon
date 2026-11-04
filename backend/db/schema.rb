@@ -10,40 +10,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_20_152154) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_27_160923) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "api_sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "token_digest"
-    t.datetime "expires_at"
+    t.string "token_digest", null: false
+    t.datetime "expires_at", null: false
     t.datetime "revoked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["expires_at"], name: "index_api_sessions_on_expires_at"
+    t.index ["token_digest"], name: "index_api_sessions_on_token_digest", unique: true
     t.index ["user_id"], name: "index_api_sessions_on_user_id"
   end
 
   create_table "cart_items", force: :cascade do |t|
     t.bigint "cart_id", null: false
     t.bigint "product_id", null: false
-    t.integer "quantity"
+    t.integer "quantity", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["cart_id", "product_id"], name: "index_cart_items_on_cart_id_and_product_id", unique: true
     t.index ["cart_id"], name: "index_cart_items_on_cart_id"
     t.index ["product_id"], name: "index_cart_items_on_product_id"
+    t.check_constraint "quantity > 0", name: "cart_items_positive_quantity"
   end
 
   create_table "carts", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_carts_on_user_id"
+    t.index ["user_id"], name: "index_carts_on_user_id", unique: true
   end
 
   create_table "couriers", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.boolean "is_available"
+    t.boolean "is_available", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "approval_status", default: 0, null: false
@@ -51,32 +55,33 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_20_152154) do
     t.bigint "reviewer_id"
     t.text "rejection_reason"
     t.index ["reviewer_id"], name: "index_couriers_on_reviewer_id"
-    t.index ["user_id"], name: "index_couriers_on_user_id"
+    t.index ["user_id"], name: "index_couriers_on_user_id", unique: true
   end
 
   create_table "order_items", force: :cascade do |t|
     t.bigint "order_id", null: false
     t.bigint "product_id", null: false
     t.string "product_title"
-    t.integer "unit_price"
+    t.bigint "unit_price"
     t.integer "quantity"
-    t.integer "total_price"
+    t.bigint "total_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["order_id"], name: "index_order_items_on_order_id"
     t.index ["product_id"], name: "index_order_items_on_product_id"
+    t.check_constraint "unit_price > 0 AND quantity > 0 AND total_price = (unit_price * quantity)", name: "order_items_valid_totals"
   end
 
   create_table "orders", force: :cascade do |t|
     t.bigint "purchase_id", null: false
     t.bigint "seller_id", null: false
-    t.bigint "courier_id", null: false
-    t.integer "products_amount"
-    t.integer "seller_reward"
-    t.integer "courier_reward"
-    t.integer "pick_up_point_reward"
-    t.integer "platform_commission"
-    t.integer "order_status"
+    t.bigint "courier_id"
+    t.bigint "products_amount"
+    t.bigint "seller_reward"
+    t.bigint "courier_reward"
+    t.bigint "pick_up_point_reward"
+    t.bigint "platform_commission"
+    t.integer "order_status", default: 0, null: false
     t.datetime "courier_accepted_at"
     t.datetime "delivered_by_courier_at"
     t.datetime "received_by_user_at"
@@ -91,21 +96,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_20_152154) do
     t.bigint "user_id", null: false
     t.bigint "purchase_id"
     t.bigint "seller_id"
-    t.integer "expected_amount"
-    t.integer "claimed_amount"
+    t.bigint "expected_amount"
+    t.bigint "claimed_amount"
     t.string "player_nickname"
     t.string "receiver_nickname"
-    t.integer "payment_claim_status"
+    t.integer "payment_claim_status", default: 0, null: false
     t.bigint "reviewer_id"
     t.datetime "reviewed_at"
     t.text "rejection_reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "purpose"
+    t.integer "purpose", null: false
     t.index ["purchase_id"], name: "index_payment_claims_on_purchase_id"
     t.index ["reviewer_id"], name: "index_payment_claims_on_reviewer_id"
     t.index ["seller_id"], name: "index_payment_claims_on_seller_id"
     t.index ["user_id"], name: "index_payment_claims_on_user_id"
+    t.check_constraint "purpose = 0 AND purchase_id IS NOT NULL AND seller_id IS NULL OR purpose = 1 AND seller_id IS NOT NULL AND purchase_id IS NULL", name: "payment_claims_valid_target"
   end
 
   create_table "pick_up_points", force: :cascade do |t|
@@ -129,22 +135,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_20_152154) do
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.integer "price"
-    t.integer "stock"
-    t.boolean "is_active"
+    t.bigint "price", null: false
+    t.integer "stock", null: false
+    t.boolean "is_active", default: false, null: false
     t.bigint "seller_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["seller_id"], name: "index_products_on_seller_id"
+    t.check_constraint "price > 0 AND stock >= 0", name: "products_valid_price_and_stock"
   end
 
   create_table "purchases", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "pick_up_point_id", null: false
-    t.integer "product_amount"
-    t.integer "delivery_amount"
-    t.integer "total_amount"
-    t.integer "purchase_status"
+    t.bigint "products_amount"
+    t.bigint "delivery_amount"
+    t.bigint "total_amount"
+    t.integer "purchase_status", default: 0, null: false
     t.datetime "payment_expire_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -164,13 +171,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_20_152154) do
     t.datetime "updated_at", null: false
     t.bigint "reviewer_id"
     t.index ["reviewer_id"], name: "index_sellers_on_reviewer_id"
-    t.index ["user_id"], name: "index_sellers_on_user_id"
+    t.index ["user_id"], name: "index_sellers_on_user_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|
     t.string "minecraft_nickname"
     t.string "telegram_username"
-    t.bigint "telegram_user_id"
+    t.bigint "telegram_user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "admin", default: false, null: false
@@ -179,7 +186,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_20_152154) do
     t.boolean "can_review_couriers", default: false, null: false
     t.boolean "can_review_pick_up_points", default: false, null: false
     t.boolean "can_review_payments", default: false, null: false
+    t.boolean "can_review_withdrawals", default: false, null: false
+    t.bigint "telegram_private_chat_id"
+    t.datetime "bot_blocked_at"
+    t.datetime "minecraft_verified_at"
+    t.index "lower((minecraft_nickname)::text)", name: "index_users_on_verified_minecraft_nickname", unique: true, where: "(minecraft_verified_at IS NOT NULL)"
     t.index ["telegram_user_id"], name: "index_users_on_telegram_user_id", unique: true
+    t.check_constraint "minecraft_verified_at IS NULL OR minecraft_nickname IS NOT NULL AND length(btrim(minecraft_nickname::text)) > 0", name: "users_verified_nickname_present"
+    t.check_constraint "telegram_user_id > 0", name: "users_positive_telegram_id"
   end
 
   add_foreign_key "api_sessions", "users"
